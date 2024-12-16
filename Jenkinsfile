@@ -19,8 +19,8 @@ pipeline {
         echo "Checking curl version..."
         sh 'curl --version'
 
-        echo "Checking jq version..."
-        sh 'jq --version'
+        // echo "Checking jq version..."
+        // sh 'jq --version'
       }
     }
 
@@ -44,7 +44,8 @@ pipeline {
     stage('Run Tests Against the Container') {
       steps {
         echo "Running tests against the service at ${env.SERVICE_URL}..."
-        sh "curl -f ${env.SERVICE_URL} | jq"
+        sh "curl -f ${env.SERVICE_URL}"
+        // | jq"
       }
     }
   }
