@@ -10,8 +10,12 @@ pipeline {
             steps {
                 script {
                     sh """
-                    export SUDO_ASKPASS=/usr/bin/ssh-askpass
-                    echo '$SUDO_PASSWORD' | sudo -S docker-compose -f docker-compose.yml build
+                    /usr/bin/expect <<EOD
+                    spawn sudo docker-compose -f docker-compose.yml build
+                    expect "password for"
+                    send "$SUDO_PASSWORD\r"
+                    interact
+                    EOD
                     """
                 }
             }
@@ -20,8 +24,12 @@ pipeline {
             steps {
                 script {
                     sh """
-                    export SUDO_ASKPASS=/usr/bin/ssh-askpass
-                    echo '$SUDO_PASSWORD' | sudo -S docker-compose -f docker-compose.yml up -d
+                    /usr/bin/expect <<EOD
+                    spawn sudo docker-compose -f docker-compose.yml up -d
+                    expect "password for"
+                    send "$SUDO_PASSWORD\r"
+                    interact
+                    EOD
                     """
                 }
             }
