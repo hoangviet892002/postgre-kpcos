@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh """
+                sh '''
                 /usr/bin/expect <<'EOD'
                 set timeout -1
                 spawn sudo docker-compose -f docker-compose.yml build
@@ -16,7 +16,7 @@ pipeline {
                 send "\$env(SUDO_PASSWORD)\\r"
                 interact
                 EOD
-                """
+                '''
             }
         }
 
