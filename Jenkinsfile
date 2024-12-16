@@ -5,14 +5,14 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    sh 'docker-compose -f docker-compose.yml build'
+                    sh 'sudo docker-compose -f docker-compose.yml build'
                 }
             }
         }
         stage('Deploy') {
             steps {
                 script {
-                    sh 'docker-compose -f docker-compose.yml up -d'
+                    sh 'sudo docker-compose -f docker-compose.yml up -d'
                 }
             }
         }
