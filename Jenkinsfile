@@ -8,32 +8,17 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                script {
-                    sh '''
-                    /usr/bin/expect -c "
-                    set timeout -1
-                    spawn sudo docker-compose -f docker-compose.yml build
-                    expect \"password for\"
-                    send \"${SUDO_PASSWORD}\r\"
-                    interact
-                    "
-                    '''
-                }
+                sh """
+                echo "${SUDO_PASSWORD}" | sudo -S docker-compose -f docker-compose.yml build
+                """
             }
         }
 
         stage('Deploy') {
             steps {
-                script {
-                    sh """
-                    /usr/bin/expect <<EOD
-                    spawn sudo docker-compose -f docker-compose.yml up -d
-                    expect "password for"
-                    send "${SUDO_PASSWORD}\\r"
-                    interact
-                    EOD
-                    """
-                }
+                sh """
+                echo "${SUDO_PASSWORD}" | sudo -S docker-compose -f docker-compose.yml up -d
+                """
             }
         }
     }
