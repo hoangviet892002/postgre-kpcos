@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        SUDO_PASSWORD = credentials('sudo-password-id')  /
+        SUDO_PASSWORD = credentials('sudo-password-id')  
     }
 
     stages {
