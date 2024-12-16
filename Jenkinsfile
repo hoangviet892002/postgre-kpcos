@@ -2,8 +2,9 @@ pipeline {
     agent any
 
     environment {
-        SUDO_PASSWORD = credentials('8<pS11"ilL')  
+        SUDO_PASSWORD = credentials('sudo-password-id')  
     }
+
     stages {
         stage('Build') {
             steps {
@@ -17,7 +18,9 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    sh 'sudo docker-compose -f docker-compose.yml up -d'
+                    sh """
+                    echo '$SUDO_PASSWORD' | sudo -S docker-compose -f docker-compose.yml up -d
+                    """
                 }
             }
         }
