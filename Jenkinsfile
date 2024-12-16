@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        SUDO_PASSWORD = credentials('sudo-password-id')  
+        SUDO_PASSWORD = credentials('sudo-password-id')  /
     }
 
     stages {
@@ -10,16 +10,27 @@ pipeline {
             steps {
                 script {
                     sh """
-                    echo '$SUDO_PASSWORD' | sudo -S docker-compose -f docker-compose.yml build
+                    /usr/bin/expect <<EOD
+                    spawn sudo docker-compose -f docker-compose.yml build
+                    expect "password for"
+                    send "$SUDO_PASSWORD\r"
+                    interact
+                    EOD
                     """
                 }
             }
         }
+
         stage('Deploy') {
             steps {
                 script {
                     sh """
-                    echo '$SUDO_PASSWORD' | sudo -S docker-compose -f docker-compose.yml up -d
+                    /usr/bin/expect <<EOD
+                    spawn sudo docker-compose -f docker-compose.yml up -d
+                    expect "password for"
+                    send "$SUDO_PASSWORD\r"
+                    interact
+                    EOD
                     """
                 }
             }
