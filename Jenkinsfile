@@ -10,13 +10,13 @@ pipeline {
             steps {
                 script {
                     sh '''
-                    /usr/bin/expect <<EOD
+                    /usr/bin/expect -c "
                     set timeout -1
                     spawn sudo docker-compose -f docker-compose.yml build
-                    expect "password for"
-                    send "$env:SUDO_PASSWORD\r"
+                    expect \"password for\"
+                    send \"$env:SUDO_PASSWORD\r\"
                     interact
-                    EOD
+                    "
                     '''
                 }
             }
@@ -26,13 +26,13 @@ pipeline {
             steps {
                 script {
                     sh '''
-                    /usr/bin/expect <<EOD
+                    /usr/bin/expect -c "
                     set timeout -1
                     spawn sudo docker-compose -f docker-compose.yml up -d
-                    expect "password for"
-                    send "$env:SUDO_PASSWORD\r"
+                    expect \"password for\"
+                    send \"$env:SUDO_PASSWORD\r\"
                     interact
-                    EOD
+                    "
                     '''
                 }
             }
