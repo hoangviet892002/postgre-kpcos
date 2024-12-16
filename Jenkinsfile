@@ -47,7 +47,7 @@ pipeline {
     //     sh "curl -f ${env.SERVICE_URL}"
     //     // | jq"
     //   }
-    }
+    // }
   }
   post {
     always {
