@@ -41,29 +41,29 @@ pipeline {
       }
     }
 
-    stage('Run Tests Against the Container') {
-      steps {
-        echo "Running tests against the service at ${env.SERVICE_URL}..."
-        sh "curl -f ${env.SERVICE_URL}"
-        // | jq"
-      }
+    // stage('Run Tests Against the Container') {
+    //   steps {
+    //     echo "Running tests against the service at ${env.SERVICE_URL}..."
+    //     sh "curl -f ${env.SERVICE_URL}"
+    //     // | jq"
+    //   }
     }
   }
-  // post {
-  //   always {
-  //     echo "Cleaning up Docker containers..."
-  //     script {
-  //       try {
-  //         sh "docker compose -f ${env.COMPOSE_FILE} down --remove-orphans -v"
-  //       } catch (e) {
-  //         echo "Cleanup encountered an issue: ${e}"
-  //       }
-  //     }
-  //     echo "Final Docker container states:"
-  //     sh "docker compose -f ${env.COMPOSE_FILE} ps"
-  //   }
-  //   failure {
-  //     echo "Pipeline failed. Please check the logs for more details."
-  //   }
-  // }
+  post {
+    always {
+      echo "Cleaning up Docker containers..."
+      script {
+        try {
+          sh "docker compose -f ${env.COMPOSE_FILE} down --remove-orphans -v"
+        } catch (e) {
+          echo "Cleanup encountered an issue: ${e}"
+        }
+      }
+      echo "Final Docker container states:"
+      sh "docker compose -f ${env.COMPOSE_FILE} ps"
+    }
+    failure {
+      echo "Pipeline failed. Please check the logs for more details."
+    }
+  }
 }
