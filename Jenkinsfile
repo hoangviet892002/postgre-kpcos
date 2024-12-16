@@ -13,7 +13,7 @@ pipeline {
                 set timeout -1
                 spawn sudo docker-compose -f docker-compose.yml build
                 expect "password for"
-                send "${SUDO_PASSWORD}\\r"
+                send "\$env(SUDO_PASSWORD)\\r"
                 interact
                 EOD
                 """
