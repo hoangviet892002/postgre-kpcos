@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  postgres:
+    container_name: postgres
+    build:
+      context: ./postgres/
+      dockerfile: Dockerfile  # Dockerfile for postgres service
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=kpcos
+      - POSTGRES_USER=postgre
+      - POSTGRES_PASSWORD=12345
+    volumes:
+      - postgresvolume:/var/lib/postgresql/data
+    networks:
+      - postgresdb-network
+
+  elasticsearch:
+    container_name: elasticsearch
+    restart: always
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.5.3
+    environment:
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - bootstrap.memory_lock=true
+      - xpack.security.enabled=false
+      # - ELASTIC_PASSWORD=secretpassword563
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - elasticvolume:/usr/share/elasticsearch/data
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "kpcos@gmail.com"
+      PGADMIN_DEFAULT_PASSWORD: "kpcos@admin"
+    ports:
+      - "82:80"
+    networks:
+      - postgresdb-network
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+
+  
+networks:
+  postgresdb-network:
+    driver: bridge
+
+volumes:
+  postgresvolume:
+  elasticvolume:
+  pgadmin-data:
