@@ -1,36 +1,20 @@
 pipeline {
     agent any
 
-    environment {
-        SUDO_PASSWORD = '8<pS11"ilL' 
-    }
-
     stages {
         stage('Build') {
             steps {
                 script {
-                    sh """
-                    /usr/bin/expect <<EOD
-                    spawn sudo docker-compose -f docker-compose.yml build
-                    expect "password for"
-                    send "$SUDO_PASSWORD\r"
-                    interact
-                    EOD
-                    """
+                    //  enter password for sudo
+                    
+                    sh 'sudo docker-compose -f docker-compose.yml build'
                 }
             }
         }
         stage('Deploy') {
             steps {
                 script {
-                    sh """
-                    /usr/bin/expect <<EOD
-                    spawn sudo docker-compose -f docker-compose.yml up -d
-                    expect "password for"
-                    send "$SUDO_PASSWORD\r"
-                    interact
-                    EOD
-                    """
+                    sh 'sudo docker-compose -f docker-compose.yml up -d'
                 }
             }
         }
