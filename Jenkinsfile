@@ -59,13 +59,7 @@ pipeline {
         sh "docker compose -f ${env.REDIS_COMPOSE_FILE} ps"
       }
     }
-    // stage('Run redis server') 
-    stage('Run redis server') {
-      steps {
-        echo "Running redis server..."
-        sh "docker run --rm -d --name redis-server -p 6379:6379 redis"
-      }
-    }
+  
     
     
     stage ('Run Tests Against the Container redis') {
