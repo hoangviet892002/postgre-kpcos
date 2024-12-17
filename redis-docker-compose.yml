@@ -1,25 +1,13 @@
-version: "3.8"
-
+version: '3.8'
 services:
-  db_redis:
-    container_name: redis_server
-    image: bitnami/redis:6.2.13
+  cache:
+    image: redis:6.2-alpine
+    restart: always
     ports:
-      - "6379:6379"
-    environment:
-      - ALLOW_EMPTY_PASSWORD=yes
-      #- REDIS_USER=innovaz
-      #- REDIS_PASSWORD=5iKzjfTmyEu6nvh
-      #- REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
-    networks:
-      - database-bridge
-    volumes:
-      - redis_data:/bitnami/redis/data
-
-networks:
-  database-bridge:
-    driver: bridge
-
+      - '6379:6379'
+    command: redis-server --save 20 1 --loglevel warning --requirepass eYVX7EwVmmxKPCDmwMtyKVge8oLd2t81
+    volumes: 
+      - cache:/data
 volumes:
-  redis_data: 
+  cache:
     driver: local
