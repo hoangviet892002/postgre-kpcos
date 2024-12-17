@@ -59,20 +59,12 @@ pipeline {
         sh "docker compose -f ${env.REDIS_COMPOSE_FILE} ps"
       }
     }
-    stage('Install redis-cli') {
-      steps {
-        echo "Installing redis-cli..."
-        sh '''
-          sudo apt-get update
-          sudo apt-get install -y redis-tools
-          '''
-      }
-    }
+    
     
     stage ('Run Tests Against the Container redis') {
       steps {
         echo "Running tests against Redis at ${env.REDIS_URL}..."
-        sh "redis-cli -h ${env.REDIS_URL} ping"
+        sh "docker run --rm redis redis-cli -h localhost -p 6379 ping"
       }
     }
 
