@@ -3,7 +3,7 @@ pipeline {
   environment {
     SERVICE_URL = "http://localhost:82/"
     COMPOSE_FILE = "docker-compose.yml"
-    REDIS_URL = "redis://localhost:6379/"
+    REDIS_URL = "localhost:6379"
     REDIS_COMPOSE_FILE = "redis-docker-compose.yml"
   }
   stages {
@@ -61,8 +61,8 @@ pipeline {
     }
     stage ('Run Tests Against the Container redis') {
       steps {
-        echo "Running tests against the service at ${env.REDIS_URL}..."
-        sh "curl -f ${env.REDIS_URL} | jq"
+        echo "Running tests against Redis at ${env.REDIS_URL}..."
+        sh "redis-cli -h ${env.REDIS_URL} ping"
       }
     }
 
