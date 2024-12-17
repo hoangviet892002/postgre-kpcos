@@ -35,22 +35,22 @@ pipeline {
     }
     // deploy postgres
 
-    // stage('Start Container postgres') {
-    //   steps {
-    //     echo "Starting Docker containers postgres..."
-    //     sh "docker compose -f ${env.COMPOSE_FILE} up -d --no-color --wait"
+    stage('Start Container postgres') {
+      steps {
+        echo "Starting Docker containers postgres..."
+        sh "docker compose -f ${env.COMPOSE_FILE} up -d --no-color --wait"
 
-    //     echo "Listing running containers postgres..."
-    //     sh "docker compose -f ${env.COMPOSE_FILE} ps"
-    //   }
-    // }
+        echo "Listing running containers postgres..."
+        sh "docker compose -f ${env.COMPOSE_FILE} ps"
+      }
+    }
 
-    // stage('Run Tests Against the Container postgres') {
-    //   steps {
-    //     echo "Running tests against the service at ${env.SERVICE_URL}..."
-    //     sh "curl -f ${env.SERVICE_URL} | jq"
-    //   }
-    // }
+    stage('Run Tests Against the Container postgres') {
+      steps {
+        echo "Running tests against the service at ${env.SERVICE_URL}..."
+        sh "curl -f ${env.SERVICE_URL} | jq"
+      }
+    }
     stage('Start Container redis') {
       steps {
         echo "Starting Docker containers..."
@@ -81,20 +81,20 @@ pipeline {
 
   }
   post {
-    always {
-      echo "Cleaning up Docker containers..."
-      script {
-        try {
-          sh "docker compose -f ${env.COMPOSE_FILE} down --remove-orphans -v"
-        } catch (e) {
-          echo "Cleanup encountered an issue: ${e}"
-        }
-      }
-      echo "Final Docker container states:"
-      sh "docker compose -f ${env.COMPOSE_FILE} ps"
-    }
-    failure {
-      echo "Pipeline failed. Please check the logs for more details."
-    }
-  }
+  //   always {
+  //     echo "Cleaning up Docker containers..."
+  //     script {
+  //       try {
+  //         sh "docker compose -f ${env.COMPOSE_FILE} down --remove-orphans -v"
+  //       } catch (e) {
+  //         echo "Cleanup encountered an issue: ${e}"
+  //       }
+  //     }
+  //     echo "Final Docker container states:"
+  //     sh "docker compose -f ${env.COMPOSE_FILE} ps"
+  //   }
+  //   failure {
+  //     echo "Pipeline failed. Please check the logs for more details."
+  //   }
+  // }
 }
