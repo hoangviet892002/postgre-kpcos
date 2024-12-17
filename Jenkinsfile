@@ -59,15 +59,24 @@ pipeline {
         sh "docker compose -f ${env.REDIS_COMPOSE_FILE} ps"
       }
     }
-  
-    
-    
-    stage ('Run Tests Against the Container redis') {
+    stage('Test Redis') {
       steps {
-        echo "Running tests against Redis at ${env.REDIS_URL}..."
-        sh "docker run --rm redis redis-cli -h localhost -p 6379 ping"
+        echo "Testing Redis connectivity..."
+        // Attempt to ping Redis
+        sh '''
+          redis-cli -h ${REDIS_URL} PING
+        '''
+        // Optionally, you can perform more comprehensive tests
+        // For example, setting and getting a key
+        sh '''
+          redis-cli -h ${REDIS_URL} SET test_key "Hello, Redis!"
+          redis-cli -h ${REDIS_URL} GET test_key
+        '''
       }
     }
+  
+    
+   
 
 
   }
