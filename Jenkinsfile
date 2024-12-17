@@ -80,7 +80,7 @@ pipeline {
 
 
   }
-  post {
+  // post {
   //   always {
   //     echo "Cleaning up Docker containers..."
   //     script {
