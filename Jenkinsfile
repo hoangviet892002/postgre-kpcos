@@ -3,7 +3,8 @@ pipeline {
   environment {
     SERVICE_URL = "http://localhost:82/"
     COMPOSE_FILE = "docker-compose.yml"
-    REDIS_URL = "localhost:6379"
+    HOST = "localhost"
+    REDIS_PORT = "6379"
     REDIS_COMPOSE_FILE = "redis-docker-compose.yml"
   }
   stages {
@@ -61,19 +62,18 @@ pipeline {
     }
     stage('Test Redis') {
       steps {
-        echo "Testing Redis connectivity..."
-        // Attempt to ping Redis
-        sh '''
-          redis-cli -h ${REDIS_URL} PING
-        '''
-        // Optionally, you can perform more comprehensive tests
-        // For example, setting and getting a key
-        sh '''
-          redis-cli -h ${REDIS_URL} SET test_key "Hello, Redis!"
-          redis-cli -h ${REDIS_URL} GET test_key
-        '''
+      echo "Testing Redis connectivity..."
+    // Ping Redis
+      sh """
+        redis-cli -h ${env.HOST} -p ${env.REDIS_PORT} PING
+        """
+    // Optionally, perform set and get operations
+      sh """
+        redis-cli -h ${env.HOST} -p ${env.REDIS_PORT} SET test_key "Hello, Redis!"
+        redis-cli -h ${env.HOST} -p ${env.REDIS_PORT} GET test_key
+      """
       }
-    }
+}
   
     
    
