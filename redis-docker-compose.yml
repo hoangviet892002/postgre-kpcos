@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  db_redis:
+    container_name: redis_server
+    image: bitnami/redis:6.2.13
+    ports:
+      - "6379:6379"
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+      #- REDIS_USER=innovaz
+      #- REDIS_PASSWORD=5iKzjfTmyEu6nvh
+      #- REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    networks:
+      - database-bridge
+    volumes:
+      - redis_data:/bitnami/redis/data
+
+networks:
+  database-bridge:
+    driver: bridge
+
+volumes:
+  redis_data: 
+    driver: local
