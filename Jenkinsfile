@@ -24,6 +24,9 @@ pipeline {
 
         echo "Checking jq version..."
         sh 'jq --version'
+
+        echo "Checking Redis CLI version..."
+        sh 'redis-cli --version'
       }
     }
  
@@ -80,21 +83,21 @@ pipeline {
 
 
   }
-  // post {
-  //   always {
-  //     echo "Cleaning up Docker containers..."
-  //     script {
-  //       try {
-  //         sh "docker compose -f ${env.COMPOSE_FILE} down --remove-orphans -v"
-  //       } catch (e) {
-  //         echo "Cleanup encountered an issue: ${e}"
-  //       }
-  //     }
-  //     echo "Final Docker container states:"
-  //     sh "docker compose -f ${env.COMPOSE_FILE} ps"
-  //   }
-  //   failure {
-  //     echo "Pipeline failed. Please check the logs for more details."
-  //   }
-  // }
+  post {
+    always {
+      echo "Cleaning up Docker containers..."
+      script {
+        try {
+          sh "docker compose -f ${env.COMPOSE_FILE} down --remove-orphans -v"
+        } catch (e) {
+          echo "Cleanup encountered an issue: ${e}"
+        }
+      }
+      echo "Final Docker container states:"
+      sh "docker compose -f ${env.COMPOSE_FILE} ps"
+    }
+    failure {
+      echo "Pipeline failed. Please check the logs for more details."
+    }
+  }
 }
