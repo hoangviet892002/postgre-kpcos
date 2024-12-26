@@ -1,3 +1,5 @@
+# run command: docker compose -f docker-compose.yml up -d --no-color --wait
+
 version: '3.8'
 
 services:
