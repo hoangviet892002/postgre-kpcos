@@ -1,5 +1,7 @@
 # run command: docker compose -f docker-compose.yml up -d --no-color --wait
 
+# sudo kill -9 $(sudo lsof -t -i:5432)
+
 version: '3.8'
 
 services:
