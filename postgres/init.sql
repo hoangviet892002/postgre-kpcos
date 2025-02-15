@@ -24,7 +24,7 @@ CREATE table construction_template(
     is_active BOOLEAN DEFAULT TRUE,
     name VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
-    status VARCHAR(255) NOT NULL
+    status VARCHAR(255)
 );
 
 -- Trigger to update updated_at column when row is updated in construction_template table
@@ -47,7 +47,7 @@ CREATE table construction_template_item(
     description TEXT NOT NULL,
     idParent UUID,
     idTemplate UUID NOT NULL,
-    status VARCHAR(255) NOT NULL,
+    status VARCHAR(255),
     FOREIGN KEY (idParent) REFERENCES construction_template_item(id),
     FOREIGN KEY (idTemplate) REFERENCES construction_template(id)
 );
@@ -71,7 +71,7 @@ CREATE table construction_template_task(
     is_active BOOLEAN DEFAULT TRUE,
     name VARCHAR(255) NOT NULL,
     idTemplateItem UUID NOT NULL,
-    status VARCHAR(255) NOT NULL,
+    status VARCHAR(255),
     FOREIGN KEY (idTemplateItem) REFERENCES construction_template_item(id)
 );
 
@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS users (
     full_name VARCHAR(255) NOT NULL,
     phone VARCHAR(255) NOT NULL,
     avatar VARCHAR(255) DEFAULT 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaotZTcu1CLMGOJMDl-f_LYBECs7tqwhgpXA&s',
-    status VARCHAR(255) NOT NULL
+    status VARCHAR(255)
 );
 
 
@@ -184,8 +184,7 @@ CREATE table package(
     is_active BOOLEAN DEFAULT TRUE,
     name VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
-    price int NOT NULL,
-    status VARCHAR(255) NOT NULL
+    price int NOT NULL
 );
 
 -- Trigger to update updated_at column when row is updated in package table
@@ -238,7 +237,7 @@ CREATE table project(
     depth float NOT NULL,
     package_id UUID NOT NULL,
     note TEXT,
-    status VARCHAR(255) NOT NULL,
+    status VARCHAR(255),
     customer_id UUID NOT NULL,
     templateDesignId UUID,
     FOREIGN KEY (package_id) REFERENCES package(id),
@@ -312,7 +311,7 @@ CREATE table service(
     type VARCHAR(255) NOT NULL,
     unit VARCHAR(255) NOT NULL,
     price int NOT NULL,
-    status VARCHAR(255) NOT NULL
+    status VARCHAR(255)
 );
 
 -- Trigger to update updated_at column when row is updated in service table
@@ -337,7 +336,7 @@ CREATE table promotion(
     discount INT NOT NULL,
     startTime TIMESTAMPTZ NOT NULL,
     expTime TIMESTAMPTZ NOT NULL,
-    status VARCHAR(255) NOT NULL
+    status VARCHAR(255)
 );
 
 -- Trigger to update updated_at column when row is updated in promotion table
@@ -362,7 +361,7 @@ CREATE table quotation(
     version INT NOT NULL,
     total_price INT NOT NULL,
     reason TEXT NOT NULL,
-    status VARCHAR(255) NOT NULL,
+    status VARCHAR(255),
     promotion_id UUID,
     idTemplate uuid not null,
     FOREIGN KEY (promotion_id) REFERENCES promotion(id),
@@ -439,7 +438,7 @@ CREATE table design(
     is_active BOOLEAN DEFAULT TRUE,
     version INT NOT NULL,
     reason TEXT,
-    status VARCHAR(255) NOT NULL,
+    status VARCHAR(255),
     is_public BOOLEAN DEFAULT FALSE,
     project_id UUID not null,
     staff_id UUID not null,
@@ -519,7 +518,7 @@ CREATE table contract(
     quotation_id UUID NOT NULL,
     project_id UUID NOT NULL,
     FOREIGN KEY (project_id) REFERENCES project(id),
-    status VARCHAR(255) NOT NULL
+    status VARCHAR(255)
 );
 
 -- Trigger to update updated_at column when row is updated in contract table
@@ -545,7 +544,7 @@ CREATE table payment_batch(
     is_paid BOOLEAN DEFAULT FALSE,
     contract_id UUID NOT NULL,
     FOREIGN KEY (contract_id) REFERENCES contract(id),
-    status VARCHAR(255) NOT NULL
+    status VARCHAR(255)
 );
 
 -- Trigger to update updated_at column when row is updated in payment_batch table
@@ -571,7 +570,7 @@ CREATE table transaction(
     amount INT NOT NULL,
     note TEXT,
     id_docs UUID,
-    status VARCHAR(255) NOT NULL,
+    status VARCHAR(255),
     FOREIGN KEY (customer_id) REFERENCES customer(id),
     FOREIGN KEY (id_docs) REFERENCES docs(id)
 );
@@ -600,7 +599,7 @@ CREATE table construction_item(
     actDate DATE,
     idParent UUID,
     idProject UUID NOT NULL,
-    status VARCHAR(255) NOT NULL,
+    status VARCHAR(255),
     FOREIGN KEY (idProject) REFERENCES project(id)
 );
 
@@ -627,7 +626,7 @@ CREATE table construction_task(
     image_url VARCHAR(255),
     reason TEXT,
     idStaff UUID,
-    status VARCHAR(255) NOT NULL,
+    status VARCHAR(255),
     FOREIGN KEY (idConstructionItem) REFERENCES construction_item(id),
     FOREIGN KEY (idStaff) REFERENCES staff(id)
 );
@@ -654,7 +653,7 @@ CREATE table maintenance_package(
     name VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
     price_per_unit INT NOT NULL,
-    status VARCHAR(255) NOT NULL
+    status VARCHAR(255)
 );
 
 -- Trigger to update updated_at column when row is updated in maintenance_package table
@@ -713,7 +712,7 @@ CREATE table maintenance_request(
     is_active BOOLEAN DEFAULT TRUE,
     customer_id UUID NOT NULL,
     maintenance_package_id UUID NOT NULL,
-    status VARCHAR(255) NOT NULL,
+    status VARCHAR(255),
     FOREIGN KEY (customer_id) REFERENCES customer(id),
     FOREIGN KEY (maintenance_package_id) REFERENCES maintenance_package(id)
 );
@@ -738,7 +737,7 @@ CREATE table maintenance_request_task(
     name VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
     staff_id UUID NOT NULL,
-    status VARCHAR(255) NOT NULL,
+    status VARCHAR(255),
     image_url VARCHAR(255),
     FOREIGN KEY (maintenance_request_id) REFERENCES maintenance_request(id),
     FOREIGN KEY (staff_id) REFERENCES staff(id)
