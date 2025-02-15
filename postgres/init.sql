@@ -309,6 +309,7 @@ CREATE table service(
     is_active BOOLEAN DEFAULT TRUE,
     name VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
+    type VARCHAR(255) NOT NULL,
     price int NOT NULL,
     status VARCHAR(255) NOT NULL
 );
