@@ -184,7 +184,8 @@ CREATE table package(
     is_active BOOLEAN DEFAULT TRUE,
     name VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
-    price int NOT NULL
+    price int NOT NULL,
+    status VARCHAR(255)
 );
 
 -- Trigger to update updated_at column when row is updated in package table
@@ -673,7 +674,7 @@ CREATE table maintenance_item(
     updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     is_active BOOLEAN DEFAULT TRUE,
     name VARCHAR(255) NOT NULL,
-    description TEXT NOT NULL,
+    description TEXT NOT NULL
 );
 
 -- Trigger to update updated_at column when row is updated in maintenance_item table
@@ -754,4 +755,3 @@ CREATE INDEX maintenance_request_task_maintenance_request_id_index ON maintenanc
 CREATE INDEX maintenance_request_task_name_index ON maintenance_request_task(name);
 CREATE INDEX maintenance_request_task_status_index ON maintenance_request_task(status);
 CREATE INDEX maintenance_request_task_staff_id_index ON maintenance_request_task(staff_id);
-
