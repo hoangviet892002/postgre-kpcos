@@ -47,6 +47,7 @@ CREATE table construction_template_item(
     description TEXT NOT NULL,
     idParent UUID,
     idTemplate UUID NOT NULL,
+    estTime INT NOT NULL,
     status VARCHAR(255),
     FOREIGN KEY (idParent) REFERENCES construction_template_item(id),
     FOREIGN KEY (idTemplate) REFERENCES construction_template(id)
@@ -70,7 +71,7 @@ CREATE table construction_template_task(
     updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
     is_active BOOLEAN DEFAULT TRUE,
     name VARCHAR(255) NOT NULL,
-    idTemplateItem UUID NOT NULL,
+    idTemplateItem UUID NOT NULL, 
     status VARCHAR(255),
     FOREIGN KEY (idTemplateItem) REFERENCES construction_template_item(id)
 );
@@ -185,6 +186,7 @@ CREATE table package(
     name VARCHAR(255) NOT NULL,
     description TEXT NOT NULL,
     price int NOT NULL,
+    rate int not null,
     status VARCHAR(255)
 );
 
