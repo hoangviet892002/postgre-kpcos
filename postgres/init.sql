@@ -111,10 +111,6 @@ BEFORE UPDATE ON users
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 
--- Indexes
-CREATE INDEX users_email_index ON users(email);
-CREATE INDEX users_phone_index ON users(phone);
-CREATE INDEX users_status_index ON users(status);
 
 -- Create customer table
 CREATE table customer(
@@ -253,14 +249,7 @@ BEFORE UPDATE ON project
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 
--- Indexes
-CREATE INDEX project_name_index ON project(name);
-CREATE INDEX project_customer_name_index ON project(customer_name);
-CREATE INDEX project_address_index ON project(address);
-CREATE INDEX project_phone_index ON project(phone);
-CREATE INDEX project_email_index ON project(email);
-CREATE INDEX project_status_index ON project(status);
-CREATE INDEX project_customer_id_index ON project(customer_id);
+
 
 -- Create project staff table
 CREATE table project_staff(
@@ -279,9 +268,6 @@ BEFORE UPDATE ON project_staff
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 
--- Indexes
-CREATE INDEX project_staff_project_id_index ON project_staff(project_id);
-CREATE INDEX project_staff_staff_id_index ON project_staff(staff_id);
 
 
 -- Create equipment table 
@@ -300,8 +286,6 @@ BEFORE UPDATE ON equipment
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 
--- Indexes
-CREATE INDEX equipment_name_index ON equipment(name);
 
 -- Create service table
 CREATE table service(
@@ -323,9 +307,6 @@ BEFORE UPDATE ON service
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 
--- Indexes
-CREATE INDEX service_name_index ON service(name);
-CREATE INDEX service_status_index ON service(status);
 
 
 -- Create promotion table
@@ -348,10 +329,7 @@ BEFORE UPDATE ON promotion
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 
--- Indexes
-CREATE INDEX promotion_name_index ON promotion(name);
-CREATE INDEX promotion_code_index ON promotion(code);
-CREATE INDEX promotion_status_index ON promotion(status);
+
 
 
 -- Create quotation table
@@ -378,10 +356,6 @@ BEFORE UPDATE ON quotation
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 
--- Indexes
-CREATE INDEX quotation_project_id_index ON quotation(project_id);
-CREATE INDEX quotation_version_index ON quotation(version);
-CREATE INDEX quotation_status_index ON quotation(status);
 
 -- Create quotation detail table
 CREATE table quotation_detail(
@@ -391,6 +365,7 @@ CREATE table quotation_detail(
     is_active BOOLEAN DEFAULT TRUE,
     quantity INT NOT NULL,
     price INT NOT NULL,
+    category VARCHAR(255) NOT NULL,
     note TEXT,
     quotation_id UUID NOT NULL,
     service_id UUID NOT NULL,
@@ -404,9 +379,7 @@ BEFORE UPDATE ON quotation_detail
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 
--- Indexes
-CREATE INDEX quotation_detail_quotation_id_index ON quotation_detail(quotation_id);
-CREATE INDEX quotation_detail_service_id_index ON quotation_detail(service_id);
+
 
 -- Create quotation equipment table
 CREATE table quotation_equipment(
@@ -417,6 +390,7 @@ CREATE table quotation_equipment(
     quantity INT NOT NULL,
     price INT NOT NULL,
     note TEXT,
+    category VARCHAR(255) NOT NULL,
     quotation_id UUID NOT NULL,
     equipment_id UUID NOT NULL,
     FOREIGN KEY (quotation_id) REFERENCES quotation(id),
@@ -429,9 +403,7 @@ BEFORE UPDATE ON quotation_equipment
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 
--- Indexes
-CREATE INDEX quotation_equipment_quotation_id_index ON quotation_equipment(quotation_id);
-CREATE INDEX quotation_equipment_equipment_id_index ON quotation_equipment(equipment_id);
+
 
 -- Create design table 
 CREATE table design(
@@ -456,11 +428,7 @@ BEFORE UPDATE ON design
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 
--- Indexes
-CREATE INDEX design_project_id_index ON design(project_id);
-CREATE INDEX design_version_index ON design(version);
-CREATE INDEX design_status_index ON design(status);
-CREATE INDEX design_staff_id_index ON design(staff_id);
+
 
 -- Create design image
 CREATE table design_image(
@@ -479,8 +447,7 @@ BEFORE UPDATE ON design_image
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 
--- Indexes
-CREATE INDEX design_image_design_id_index ON design_image(design_id);
+
 
 
 -- create docs table
@@ -501,11 +468,6 @@ CREATE TRIGGER update_docs_updated_at
 BEFORE UPDATE ON docs
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
-
--- Indexes
-CREATE INDEX docs_project_id_index ON docs(project_id);
-CREATE INDEX docs_name_index ON docs(name);
-CREATE INDEX docs_type_index ON docs(type);
 
 -- create contract table
 CREATE table contract(
@@ -530,10 +492,6 @@ BEFORE UPDATE ON contract
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 
--- Indexes
-CREATE INDEX contract_project_id_index ON contract(project_id);
-CREATE INDEX contract_quotation_id_index ON contract(quotation_id);
-CREATE INDEX contract_status_index ON contract(status);
 
 
 -- create payment batch table
@@ -556,9 +514,6 @@ BEFORE UPDATE ON payment_batch
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 
--- Indexes
-CREATE INDEX payment_batch_contract_id_index ON payment_batch(contract_id);
-CREATE INDEX payment_batch_status_index ON payment_batch(status);
 
 
 -- create transaction table
@@ -584,11 +539,6 @@ BEFORE UPDATE ON transaction
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 
--- Indexes
-CREATE INDEX transaction_customer_id_index ON transaction(customer_id);
-CREATE INDEX transaction_type_index ON transaction(type);
-CREATE INDEX transaction_no_index ON transaction(no);
-CREATE INDEX transaction_status_index ON transaction(status);
 
 -- create construction item table
 CREATE table construction_item(
@@ -612,11 +562,6 @@ BEFORE UPDATE ON construction_item
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 
--- Indexes
-CREATE INDEX construction_item_name_index ON construction_item(name);
-CREATE INDEX construction_item_status_index ON construction_item(status);
-CREATE INDEX construction_item_idParent_index ON construction_item(idParent);
-CREATE INDEX construction_item_idProject_index ON construction_item(idProject);
 
 -- create construction task table
 CREATE table construction_task(
@@ -640,12 +585,6 @@ BEFORE UPDATE ON construction_task
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 
--- Indexes
-CREATE INDEX construction_task_name_index ON construction_task(name);
-CREATE INDEX construction_task_status_index ON construction_task(status);
-CREATE INDEX construction_task_idConstructionItem_index ON construction_task(idConstructionItem);
-CREATE INDEX construction_task_idStaff_index ON construction_task(idStaff);
-
 
 -- create maintenance package table
 CREATE table maintenance_package(
@@ -665,9 +604,7 @@ BEFORE UPDATE ON maintenance_package
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 
--- Indexes
-CREATE INDEX maintenance_package_name_index ON maintenance_package(name);
-CREATE INDEX maintenance_package_status_index ON maintenance_package(status);
+
 
 -- create maintenance item table
 CREATE table maintenance_item(
@@ -685,8 +622,6 @@ BEFORE UPDATE ON maintenance_item
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 
--- Indexes
-CREATE INDEX maintenance_item_name_index ON maintenance_item(name);
 
 -- create maintenance package item table
 CREATE table maintenance_package_item(
@@ -726,10 +661,7 @@ BEFORE UPDATE ON maintenance_request
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 
--- Indexes
-CREATE INDEX maintenance_request_customer_id_index ON maintenance_request(customer_id);
-CREATE INDEX maintenance_request_maintenance_package_id_index ON maintenance_request(maintenance_package_id);
-CREATE INDEX maintenance_request_status_index ON maintenance_request(status);
+
 
 -- create maintenance request task table
 CREATE table maintenance_request_task(
@@ -752,8 +684,3 @@ BEFORE UPDATE ON maintenance_request_task
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 
--- Indexes
-CREATE INDEX maintenance_request_task_maintenance_request_id_index ON maintenance_request_task(maintenance_request_id);
-CREATE INDEX maintenance_request_task_name_index ON maintenance_request_task(name);
-CREATE INDEX maintenance_request_task_status_index ON maintenance_request_task(status);
-CREATE INDEX maintenance_request_task_staff_id_index ON maintenance_request_task(staff_id);
